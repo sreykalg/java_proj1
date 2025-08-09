@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/lectures")
-class LectureApiController {
+public class LectureApiController {
 
     private final LectureService lectureService;
 

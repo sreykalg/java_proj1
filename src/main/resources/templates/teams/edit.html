@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Team</title>
+</head>
+<body>
+<h1>Edit Team</h1>
+
+<form th:action="@{'/teams/' + ${teamId} + '/edit'}" th:object="${updateTeamRequest}" method="post">
+  <label>Name: <input type="text" th:field="*{name}"/></label><br/>
+  <button type="submit">Update Team</button>
+</form>
+
+<a th:href="@{/teams/list}">Back to Team List</a>
+</body>
+</html>

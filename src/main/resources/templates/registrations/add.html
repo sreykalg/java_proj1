@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Registration</title>
+</head>
+<body>
+<h1>Add New Registration</h1>
+
+<form th:action="@{/registrations/add}" th:object="${createRegistrationRequest}" method="post">
+  <label>Member:
+    <select th:field="*{memberId}">
+      <option th:each="member : ${members}" th:value="${member.memberId}" th:text="${member.name}">Member</option>
+    </select>
+  </label><br/>
+  <label>Lecture:
+    <select th:field="*{lectureId}">
+      <option th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.title}">Lecture</option>
+    </select>
+  </label><br/>
+  <label>Registered Date: <input type="date" th:field="*{registeredDate}"/></label><br/>
+  <button type="submit">Add Registration</button>
+</form>
+
+<a th:href="@{/registrations/list}">Back to Registration List</a>
+</body>
+</html>
