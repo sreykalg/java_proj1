@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Lecture</title>
+</head>
+<body>
+<h1>Edit Lecture</h1>
+
+<form th:action="@{'/lectures/' + ${lectureId} + '/edit'}" th:object="${updateLectureRequest}" method="post">
+  <label>Title: <input type="text" th:field="*{title}"/></label><br/>
+  <label>Content: <textarea th:field="*{content}"></textarea></label><br/>
+  <button type="submit">Update Lecture</button>
+</form>
+
+<a th:href="@{/lectures/list}">Back to Lecture List</a>
+</body>
+</html>

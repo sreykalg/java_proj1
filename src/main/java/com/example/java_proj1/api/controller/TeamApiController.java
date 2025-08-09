@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/teams")
-class TeamApiController {
+public class TeamApiController {
 
     private final TeamService teamService;
 

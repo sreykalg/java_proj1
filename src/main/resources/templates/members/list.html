@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Member List</title>
+</head>
+<body>
+<h1>Members</h1>
+
+<a th:href="@{/members/add}">Add New Member</a>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Address</th>
+    <th>Created Date</th>
+    <th>Team</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="member : ${members}">
+    <td th:text="${member.memberId}"></td>
+    <td th:text="${member.name}"></td>
+    <td th:text="${member.age}"></td>
+    <td th:text="${member.address}"></td>
+    <td th:text="${member.createdDate}"></td>
+    <td th:text="${member.team != null ? member.team.name : 'No Team'}"></td>
+    <td>
+      <a th:href="@{'/members/' + ${member.memberId} + '/edit'}">Edit</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
