@@ -1,0 +1,39 @@
+DROP TABLE IF EXISTS registration;
+DROP TABLE IF EXISTS member;
+DROP TABLE IF EXISTS lecture;
+DROP TABLE IF EXISTS team;
+
+
+CREATE TABLE team (
+    team_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_date DATE NOT NULL
+);
+
+CREATE TABLE member (
+    member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    age INT NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    created_date DATE NOT NULL,
+    team_id BIGINT,
+    CONSTRAINT fk_member_team FOREIGN KEY (team_id) REFERENCES team(team_id)
+);
+
+
+CREATE TABLE lecture (
+    lecture_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    created_date DATE NOT NULL
+);
+
+CREATE TABLE registration (
+    registration_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    registered_date DATE NOT NULL,
+    lecture_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    CONSTRAINT fk_registration_lecture FOREIGN KEY (lecture_id) REFERENCES lecture(lecture_id),
+    CONSTRAINT fk_registration_member FOREIGN KEY (member_id) REFERENCES member(member_id)
+);
+
