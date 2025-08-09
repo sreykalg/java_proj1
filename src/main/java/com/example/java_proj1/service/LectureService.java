@@ -1,34 +1,44 @@
 package com.example.java_proj1.service;
 
+
+import com.example.java_proj1.domain.Lecture;
+import com.example.java_proj1.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class LectureService {
-    private final LectureRepository repo;
-    private final RegistrationRepository regRepo;
-    private final LectureMapper mapper;
-    private final MemberMapper memberMapper;
 
-    public LectureDTO addLecture(LectureDTO dto) {
-        return mapper.toDto(repo.save(mapper.toEntity(dto)));
+    private final LectureRepository lectureRepository;
+
+    @Transactional
+    public Long register(Lecture lecture) {
+        lectureRepository.save(lecture);
+        return lecture.getLectureId();
     }
 
-    public LectureDTO updateLecture(Long id, LectureDTO dto) {
-        Lecture l = repo.findById(id).orElseThrow();
-        l.setTitle(dto.getTitle());
-        return mapper.toDto(repo.save(l));
+    @Transactional
+    public void update(Long lectureId, String title, String content) {
+        var lecture = lectureRepository.findById(lectureId).orElseThrow();
+        lecture.changeTitle(title);
+        lecture.changeContent(content);
     }
 
-    public List<LectureDTO> list() {
-        return repo.findAll().stream().map(mapper::toDto).toList();
+    public List<Lecture> findAll() {
+        return lectureRepository.findAll();
     }
 
-    public List<MemberDTO> students(Long lectureId) {
-        return regRepo.findByLecture_LectureId(lectureId).stream()
-                .map(r -> memberMapper.toDto(r.getMember())).toList();
+    @Transactional(readOnly = true)
+    public Lecture findById(Long id) {
+        return lectureRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Lecture not found: " + id));
     }
+
 }
 
 

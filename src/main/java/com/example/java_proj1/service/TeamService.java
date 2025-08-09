@@ -1,30 +1,40 @@
 package com.example.java_proj1.service;
 
+import com.example.java_proj1.domain.Team;
+import com.example.java_proj1.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TeamService {
 
-    private final TeamRepository repo;
-    private final TeamMapper mapper;
+    private final TeamRepository teamRepository;
 
-    // add
-    public TeamDTO addTeam(TeamDTO dto) {
-        return mapper.toDto(repo.save(mapper.toEntity(dto)));
+    @Transactional
+    public Long register(Team team){
+        teamRepository.save(team);
+        return team.getTeamId();
     }
 
-    // update
-    public TeamDTO updateTeam(Long id, TeamDTO dto) {
-        Team t = repo.findById(id).orElseThrow();
-        t.setName(dto.getName());
-        return repo.finaAll().stream().map(mapper::toDto).toList();
+    @Transactional
+    public void update(Long teamId, String name){
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        team.setName(name);
     }
 
-    // list
-    public List<TeamDTO> list() {
-        return repo.findAll().stream().map(mapper::toDto).toList();
+    public List<Team> findAll(){
+        return teamRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Team findById(Long teamId) {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new IllegalArgumentException("Team not found with id: " + teamId));
     }
 
 }
