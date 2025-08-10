@@ -21,22 +21,22 @@ public class TeamController {
 
     private final TeamService teamService;
 
-    // List all teams page
+    //List all teams page
     @GetMapping("/list")
     public String listTeams(Model model) {
         List<Team> teams = teamService.findAll();
         model.addAttribute("teams", teams);
-        return "teams/list";  // maps to templates/teams/list.html
+        return "teams/list";
     }
 
-    // Show add team form
+    //Show add team form
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("createTeamRequest", new TeamApiController.CreateTeamRequest("", LocalDate.now()));
-        return "teams/add";  // templates/teams/add.html
+        return "teams/add";
     }
 
-    // Handle add team form submit
+    //add team form submit
     @PostMapping("/add")
     public String addTeam(@Valid @ModelAttribute("createTeamRequest") TeamApiController.CreateTeamRequest request,
                           BindingResult bindingResult) {
@@ -51,17 +51,17 @@ public class TeamController {
         return "redirect:/teams/list";
     }
 
-    // Show edit team form
+    //Show edit team form
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Team team = teamService.findById(id);
         TeamApiController.UpdateTeamRequest updateRequest = new TeamApiController.UpdateTeamRequest(team.getName());
         model.addAttribute("updateTeamRequest", updateRequest);
         model.addAttribute("teamId", id);
-        return "teams/edit";  // templates/teams/edit.html
+        return "teams/edit";
     }
 
-    // Handle edit team form submit
+    //Edit team form submit
     @PostMapping("/{id}/edit")
     public String editTeam(@PathVariable("id") Long id,
                            @Valid @ModelAttribute("updateTeamRequest") TeamApiController.UpdateTeamRequest request,

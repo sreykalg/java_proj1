@@ -21,22 +21,22 @@ public class LectureController {
 
     private final LectureService lectureService;
 
-    // List all lectures page
+    //List all lectures page
     @GetMapping("/list")
     public String listLectures(Model model) {
         List<Lecture> lectures = lectureService.findAll();
         model.addAttribute("lectures", lectures);
-        return "lectures/list";  // templates/lectures/list.html
+        return "lectures/list";
     }
 
-    // Show add lecture form
+    //Show add lecture form
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("createLectureRequest", new CreateLectureRequest("", "", LocalDate.now()));
-        return "lectures/add";  // templates/lectures/add.html
+        return "lectures/add";
     }
 
-    // Handle add lecture form submit
+    //add lecture form submit
     @PostMapping("/add")
     public String addLecture(@Valid @ModelAttribute("createLectureRequest") CreateLectureRequest request,
                              BindingResult bindingResult) {
@@ -52,17 +52,17 @@ public class LectureController {
         return "redirect:/lectures/list";
     }
 
-    // Show edit lecture form
+    //edit lecture form
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Lecture lecture = lectureService.findById(id);
         UpdateLectureRequest updateRequest = new UpdateLectureRequest(lecture.getTitle(), lecture.getContent());
         model.addAttribute("updateLectureRequest", updateRequest);
         model.addAttribute("lectureId", id);
-        return "lectures/edit";  // templates/lectures/edit.html
+        return "lectures/edit";
     }
 
-    // Handle edit lecture form submit
+    //edit lecture form submit
     @PostMapping("/{id}/edit")
     public String editLecture(@PathVariable("id") Long id,
                               @Valid @ModelAttribute("updateLectureRequest") UpdateLectureRequest request,

@@ -27,24 +27,24 @@ public class RegistrationController {
     private final MemberService memberService;
     private final LectureService lectureService;
 
-    // List all registrations page
+    //List all registrations page
     @GetMapping("/list")
     public String listRegistrations(Model model) {
         List<Registration> registrations = registrationService.findAll();
         model.addAttribute("registrations", registrations);
-        return "registrations/list";  // templates/registrations/list.html
+        return "registrations/list";
     }
 
-    // Show add registration form
+    //Show add registration form
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("createRegistrationRequest", new RegistrationApiController.CreateRegistrationRequest(LocalDate.now(), null, null));
         model.addAttribute("members", memberService.findMembers());
         model.addAttribute("lectures", lectureService.findAll());
-        return "registrations/add";  // templates/registrations/add.html
+        return "registrations/add";
     }
 
-    // Handle add registration form submit
+    //add registration form submit
     @PostMapping("/add")
     public String addRegistration(@Valid @ModelAttribute("createRegistrationRequest") RegistrationApiController.CreateRegistrationRequest request,
                                   BindingResult bindingResult,

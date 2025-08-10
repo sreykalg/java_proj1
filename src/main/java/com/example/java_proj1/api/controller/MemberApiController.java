@@ -22,7 +22,11 @@ public class MemberApiController {
 
     @PostMapping("/add")
     public CreateMemberResponse register(@RequestBody @Valid CreateMemberRequest request) {
-        Team team = teamService.findById(request.teamId());
+        Team team = null;
+        if (request.teamId() != null) {
+            team = teamService.findById(request.teamId());
+        }
+
         Member member = Member.builder()
                 .name(request.name())
                 .age(request.age())
@@ -36,15 +40,22 @@ public class MemberApiController {
 
     @PutMapping("/{id}/edit")
     public UpdateMemberResponse update(@PathVariable("id") Long id, @RequestBody @Valid UpdateMemberRequest request) {
-        memberService.update(id, request.name(), request.age(), request.address());
+        Team team = null;
+        if (request.teamId() != null) {
+            team = teamService.findById(request.teamId());
+        }
+        memberService.update(id, request.name(), request.age(), request.address(), team);
         Member updated = memberService.findById(id);
         return new UpdateMemberResponse(updated.getMemberId(), updated.getName());
     }
 
+
     @GetMapping("/list")
     public Result<List<GetMemberResponse>> list() {
         List<GetMemberResponse> members = memberService.findMembers().stream()
-                .map(m -> new GetMemberResponse(m.getMemberId(), m.getName(), m.getAge(), m.getAddress(), m.getCreatedDate()))
+                .map(m -> new GetMemberResponse(m.getMemberId(), m.getName(), m.getAge(), m.getAddress(), m.getCreatedDate(), m.getTeam() != null
+                        ? new TeamResponse(m.getTeam().getTeamId(), m.getTeam().getName())
+                        : null))
                 .collect(Collectors.toList());
         return new Result<>(members.size(), members);
     }
@@ -65,19 +76,31 @@ public class MemberApiController {
             @JsonFormat(pattern = "yyyy-MM-dd")
             @Valid LocalDate createdDate,
             Long teamId
-    ) {}
+    ) {
+    }
 
-    public record CreateMemberResponse(Long id) {}
+    public record CreateMemberResponse(Long id) {
+    }
 
     public record UpdateMemberRequest(
             @NotEmpty String name,
             int age,
-            @NotEmpty String address
-    ) {}
+            @NotEmpty String address,
 
-    public record UpdateMemberResponse(Long id, String name) {}
+            Long teamId
+    ) {
+    }
 
-    public record GetMemberResponse(Long id, String name, int age, String address, LocalDate createdDate) {}
+    public record UpdateMemberResponse(Long id, String name) {
+    }
 
-    public record Result<T>(int count, T data) {}
+    public record TeamResponse(Long teamId, String name) {
+    }
+
+    public record GetMemberResponse(Long id, String name, int age, String address, LocalDate createdDate,
+                                    TeamResponse team) {
+    }
+
+    public record Result<T>(int count, T data) {
+    }
 }
