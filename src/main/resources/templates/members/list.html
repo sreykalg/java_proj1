@@ -1,39 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Member List</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Member List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
-<body>
-<h1>Members</h1>
+<body class="bg-light">
 
-<a th:href="@{/members/add}">Add New Member</a>
+<main class="container py-5">
+    <!-- Header & Action -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <h2 class="fw-bold text-primary mb-2 mb-sm-0">Member List</h2>
+        <a th:href="@{/members/add}" class="btn btn-outline-primary w-30 rounded shadow-sm d-block">
+            + Register New Member
+        </a>
+    </div>
 
-<table border="1" cellpadding="5" cellspacing="0">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Age</th>
-    <th>Address</th>
-    <th>Created Date</th>
-    <th>Team</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="member : ${members}">
-    <td th:text="${member.memberId}"></td>
-    <td th:text="${member.name}"></td>
-    <td th:text="${member.age}"></td>
-    <td th:text="${member.address}"></td>
-    <td th:text="${member.createdDate}"></td>
-    <td th:text="${member.team != null ? member.team.name : 'No Team'}"></td>
-    <td>
-      <a th:href="@{'/members/' + ${member.memberId} + '/edit'}">Edit</a>
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <!-- Member List Card -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
 
+            <!-- Table -->
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle text-center">
+                        <thead class="table-primary">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Creation Date</th>
+                            <th scope="col">Team</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="member : ${members}">
+                            <td th:text="${member.memberId}"></td>
+                            <td th:text="${member.name}"></td>
+                            <td th:text="${member.age}"></td>
+                            <td th:text="${member.address}"></td>
+                            <td th:text="${member.createdDate}"></td>
+                            <td th:text="${member.team != null ? member.team.name : 'No Team'}"></td>
+
+                            <!-- Edit Button -->
+                            <td>
+                                <a th:href="@{'/members/' + ${member.memberId} + '/edit'}"
+                                   class="btn btn-secondary btn-sm rounded px-4">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- Back to home button at bottom right -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <a th:href="@{/}" class="btn btn-warning btn-sm rounded">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

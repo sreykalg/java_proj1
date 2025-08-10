@@ -1,26 +1,95 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <title>Add Registration</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Add New Registration</h1>-->
+
+<!--<form th:action="@{/registrations/add}" th:object="${createRegistrationRequest}" method="post">-->
+<!--  <label>Member:-->
+<!--    <select th:field="*{memberId}">-->
+<!--      <option th:each="member : ${members}" th:value="${member.memberId}" th:text="${member.name}">Member</option>-->
+<!--    </select>-->
+<!--  </label><br/>-->
+<!--  <label>Lecture:-->
+<!--    <select th:field="*{lectureId}">-->
+<!--      <option th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.title}">Lecture</option>-->
+<!--    </select>-->
+<!--  </label><br/>-->
+<!--  <label>Registered Date: <input type="date" th:field="*{registeredDate}"/></label><br/>-->
+<!--  <button type="submit">Add Registration</button>-->
+<!--</form>-->
+
+<!--<a th:href="@{/registrations/list}">Back to Registration List</a>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Add Registration</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Add Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
-<body>
-<h1>Add New Registration</h1>
+<body class="bg-light">
 
-<form th:action="@{/registrations/add}" th:object="${createRegistrationRequest}" method="post">
-  <label>Member:
-    <select th:field="*{memberId}">
-      <option th:each="member : ${members}" th:value="${member.memberId}" th:text="${member.name}">Member</option>
-    </select>
-  </label><br/>
-  <label>Lecture:
-    <select th:field="*{lectureId}">
-      <option th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.title}">Lecture</option>
-    </select>
-  </label><br/>
-  <label>Registered Date: <input type="date" th:field="*{registeredDate}"/></label><br/>
-  <button type="submit">Add Registration</button>
-</form>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4 fw-bold text-primary">Add New Registration</h3>
 
-<a th:href="@{/registrations/list}">Back to Registration List</a>
+                    <form th:action="@{/registrations/add}" th:object="${createRegistrationRequest}" method="post">
+
+                        <!-- Member Selection -->
+                        <div class="mb-3">
+                            <label for="memberSelect" class="form-label fw-semibold">Select Member</label>
+                            <select id="memberSelect" th:field="*{memberId}" class="form-select" required>
+                                <option value="" disabled selected>Choose Member</option>
+                                <option th:each="member : ${members}"
+                                        th:value="${member.memberId}"
+                                        th:text="${member.name}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Lecture Selection -->
+                        <div class="mb-3">
+                            <label for="lectureSelect" class="form-label fw-semibold">Select Lecture</label>
+                            <select id="lectureSelect" th:field="*{lectureId}" class="form-select" required>
+                                <option value="" disabled selected>Choose Lecture</option>
+                                <option th:each="lecture : ${lectures}"
+                                        th:value="${lecture.lectureId}"
+                                        th:text="${lecture.title}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Registered Date -->
+                        <div class="mb-4">
+                            <label for="registeredDate" class="form-label fw-semibold">Registered Date</label>
+                            <input type="date" id="registeredDate" th:field="*{registeredDate}" class="form-control" required/>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/registrations/list}" class="btn btn-warning btn-sm rounded">
+                                Back to Registration List
+                            </a>
+                            <button type="submit" class="btn btn-success btn-sm rounded">
+                                Save Registration
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
