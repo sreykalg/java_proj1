@@ -43,9 +43,12 @@ public class RegistrationApiController {
             @Valid LocalDate registeredDate,
             Long memberId,
             Long lectureId
-    ) {}
+    ) {
+    }
 
-    public record CreateRegistrationResponse(Long id) {}
+    public record CreateRegistrationResponse(Long id) {
+    }
 
-    public record Result<T>(int count, T data) {}
+    public record Result<T>(int count, T data) {
+    }
 }

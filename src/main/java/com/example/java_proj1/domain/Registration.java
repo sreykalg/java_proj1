@@ -27,7 +27,6 @@ public class Registration {
     @Column(name = "registration_id")
     private Long registrationId;
 
-    // information on the date of taking the lecture is required
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate registeredDate;
 
