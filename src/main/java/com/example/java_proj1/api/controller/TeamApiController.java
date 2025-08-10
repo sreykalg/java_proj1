@@ -44,18 +44,13 @@ public class TeamApiController {
             @NotEmpty String name,
             @JsonFormat(pattern = "yyyy-MM-dd")
             @Valid LocalDate createdDate
-    ) {
-    }
+    ) {}
 
-    public record CreateTeamResponse(Long id) {
-    }
+    public record CreateTeamResponse(Long id) {}
 
-    public record UpdateTeamRequest(@NotEmpty String name) {
-    }
+    public record UpdateTeamRequest(@NotEmpty String name) {}
 
-    public record UpdateTeamResponse(Long id, String name) {
-    }
+    public record UpdateTeamResponse(Long id, String name) {}
 
-    public record Result<T>(int count, T data) {
-    }
+    public record Result<T>(int count, T data) {}
 }

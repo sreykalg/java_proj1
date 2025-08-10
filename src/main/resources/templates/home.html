@@ -1,136 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
   <title>Home Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: linear-gradient(to right, #f8f9fa, #e9ecef);
-      color: #333;
-    }
-
-    header {
-      background-color: #343a40;
-      color: white;
-      padding: 1.5rem 2rem;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: #495057;
-      padding: 0.5rem 0;
-      gap: 1rem;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    nav a:hover {
-      background-color: #6c757d;
-    }
-
-    main {
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .card {
-      background-color: white;
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-    }
-
-    .card a {
-      text-decoration: none;
-      color: #007bff;
-      font-weight: bold;
-    }
-
-    .card a:hover {
-      color: #0056b3;
-    }
-
-    footer {
-      background-color: #343a40;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-    }
-  </style>
 </head>
 <body>
-
-<header>
-  <h1>University Management System</h1>
-</header>
+<h1>Welcome to the University Management System</h1>
 
 <nav>
   <a href="/members/list">Members</a>
   <a href="/teams/list">Teams</a>
   <a href="/lectures/list">Lectures</a>
   <a href="/registrations/list">Registrations</a>
+
 </nav>
-
-<main>
-  <h2>Welcome!</h2>
-  <p>Manage members, teams, lectures, and registrations all in one place.</p>
-
-  <div class="card-container">
-    <div class="card">
-      <h3>Members</h3>
-      <p>View and manage all registered members.</p>
-      <a href="/members/list">Go to Members</a>
-    </div>
-    <div class="card">
-      <h3>Teams</h3>
-      <p>Organize and manage your teams efficiently.</p>
-      <a href="/teams/list">Go to Teams</a>
-    </div>
-    <div class="card">
-      <h3>Lectures</h3>
-      <p>Access and manage lecture schedules.</p>
-      <a href="/lectures/list">Go to Lectures</a>
-    </div>
-    <div class="card">
-      <h3>Registrations</h3>
-      <p>Track and manage course registrations.</p>
-      <a href="/registrations/list">Go to Registrations</a>
-    </div>
-  </div>
-</main>
-
-<footer>
-  &copy; LU-CS Student Year 3 &lt;Leng Sreyka, Tan Bunhourt&gt;
-</footer>
-
 </body>
 </html>
+
+
+

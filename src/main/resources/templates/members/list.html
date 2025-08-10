@@ -38,15 +38,16 @@
                         </thead>
                         <tbody>
                         <tr th:each="member : ${members}">
-                            <td th:text="${member.id}"></td>
+                            <td th:text="${member.memberId}"></td>
                             <td th:text="${member.name}"></td>
                             <td th:text="${member.age}"></td>
                             <td th:text="${member.address}"></td>
                             <td th:text="${member.createdDate}"></td>
                             <td th:text="${member.team != null ? member.team.name : 'No Team'}"></td>
+
                             <!-- Edit Button -->
                             <td>
-                                <a th:href="@{'/members/' + ${member.id} + '/edit'}"
+                                <a th:href="@{'/members/' + ${member.memberId} + '/edit'}"
                                    class="btn btn-secondary btn-sm rounded px-4">
                                     Edit
                                 </a>

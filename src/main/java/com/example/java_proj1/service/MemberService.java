@@ -1,7 +1,6 @@
 package com.example.java_proj1.service;
 
 import com.example.java_proj1.domain.Member;
-import com.example.java_proj1.domain.Team;
 import com.example.java_proj1.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,22 +36,17 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member findById(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
+    public Member findById(Long memberId){
+        return memberRepository.findById(memberId).orElseThrow();
     }
 
     @Transactional
-    public void update(Long memberId, String name, int age, String address, Team team) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
+    public void update(Long memberId, String name, int age, String address){
+        Member member = memberRepository.findById(memberId).orElseThrow();
         member.changeName(name);
         member.changeAge(age);
         member.changeAddress(address);
-
-        member.changeTeam(team);
     }
-
 
 }
 

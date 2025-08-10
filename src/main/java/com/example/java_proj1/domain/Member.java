@@ -23,7 +23,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long memberId;
+    private Long memberId; //Primary key
 
     // Constructor
     public Member(Long memberId, String name, int age, String address, LocalDate createdDate) {
@@ -32,6 +32,8 @@ public class Member {
         this.age = age;
         this.address = address;
         this.createdDate = createdDate;
+//        this.team = team;
+//        this.registrations = registrations;
     }
 
     private String name;
@@ -41,12 +43,12 @@ public class Member {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
+    @ManyToOne(optional = true, fetch = FetchType.LAZY) //Many member belong to one team
+    @JoinColumn(name = "team_id")  // Foreign key in Member referencing Team.team_id
     private Team team;
 
     @Builder.Default
-    @OneToMany(mappedBy = "member",  fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member",  fetch = FetchType.LAZY) // One team can have multiple members
     private List<Registration> registrations = new ArrayList<>();
 
     // change name
@@ -65,5 +67,5 @@ public class Member {
     }
 
     // change Team
-    public void changeTeam(Team team){this.team = team;}
+    public void changeTeam (Team team){this.team = team;}
 }
