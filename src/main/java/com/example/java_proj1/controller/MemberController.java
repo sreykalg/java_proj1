@@ -1,6 +1,5 @@
 package com.example.java_proj1.controller;
 
-import com.example.java_proj1.api.controller.MemberApiController;
 import com.example.java_proj1.api.controller.MemberApiController.CreateMemberRequest;
 import com.example.java_proj1.api.controller.MemberApiController.UpdateMemberRequest;
 import com.example.java_proj1.api.controller.MemberApiController.GetMemberResponse;
@@ -27,28 +26,27 @@ public class MemberController {
     private final MemberService memberService;
     private final TeamService teamService;
 
-    //List all members - return view
+    // List all members - return view
     @GetMapping("/list")
     public String listMembers(Model model) {
         List<Member> members = memberService.findMembers();
+        // Map to GetMemberResponse DTOs (same as your API)
         List<GetMemberResponse> memberResponses = members.stream()
-                .map(m -> new GetMemberResponse(m.getMemberId(), m.getName(), m.getAge(), m.getAddress(), m.getCreatedDate(), m.getTeam() != null
-                        ? new MemberApiController.TeamResponse(m.getTeam().getTeamId(), m.getTeam().getName())
-                        : null))
+                .map(m -> new GetMemberResponse(m.getMemberId(), m.getName(), m.getAge(), m.getAddress(), m.getCreatedDate()))
                 .collect(Collectors.toList());
         model.addAttribute("members", memberResponses);
-        return "members/list";
+        return "members/list";  // thymeleaf template: templates/members/list.html
     }
 
-    //Show Add Member form
+    // Show Add Member form
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("createMemberRequest", new CreateMemberRequest("", 0, "", LocalDate.now(), null));
         model.addAttribute("teams", teamService.findAll());
-        return "members/add";
+        return "members/add";  // templates/members/add.html
     }
 
-    //Add Member form submit
+    // Handle Add Member form submit
     @PostMapping("/add")
     public String addMember(@Valid @ModelAttribute("createMemberRequest") CreateMemberRequest request,
                             BindingResult bindingResult,
@@ -72,22 +70,21 @@ public class MemberController {
         return "redirect:/members/list";
     }
 
-    //Show Edit Member form
+    // Show Edit Member form
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Member member = memberService.findById(id);
-
-        UpdateMemberForm updateForm = new UpdateMemberForm(member);
-        model.addAttribute("updateMemberRequest", updateForm);
+        UpdateMemberRequest updateRequest = new UpdateMemberRequest(member.getName(), member.getAge(), member.getAddress());
+        model.addAttribute("updateMemberRequest", updateRequest);
         model.addAttribute("memberId", id);
         model.addAttribute("teams", teamService.findAll());
-        return "members/edit";
+        return "members/edit";  // templates/members/edit.html
     }
 
-    //Edit Member form submit
+    // Handle Edit Member form submit
     @PostMapping("/{id}/edit")
     public String editMember(@PathVariable("id") Long id,
-                             @Valid @ModelAttribute("updateMemberRequest") UpdateMemberForm form,
+                             @Valid @ModelAttribute("updateMemberRequest") UpdateMemberRequest request,
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
@@ -95,29 +92,7 @@ public class MemberController {
             model.addAttribute("teams", teamService.findAll());
             return "members/edit";
         }
-        Team team = null;
-        if (form.teamId() != null) {
-            team = teamService.findById(form.teamId());
-        }
-//        memberService.update(id, request.name(), request.age(), request.address());
-        memberService.update(id, form.name(), form.age(), form.address(), team);
+        memberService.update(id, request.name(), request.age(), request.address());
         return "redirect:/members/list";
-
-    }
-
-    public record UpdateMemberForm(
-            String name,
-            int age,
-            String address,
-            Long teamId
-    ) {
-        public UpdateMemberForm(Member member) {
-            this(
-                    member.getName(),
-                    member.getAge(),
-                    member.getAddress(),
-                    member.getTeam() != null ? member.getTeam().getTeamId() : null
-            );
-        }
     }
 }

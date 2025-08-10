@@ -46,18 +46,13 @@ public class LectureApiController {
             @NotEmpty String content,
             @JsonFormat(pattern = "yyyy-MM-dd")
             @Valid LocalDate createdDate
-    ) {
-    }
+    ) {}
 
-    public record CreateLectureResponse(Long id) {
-    }
+    public record CreateLectureResponse(Long id) {}
 
-    public record UpdateLectureRequest(@NotEmpty String title, @NotEmpty String content) {
-    }
+    public record UpdateLectureRequest(@NotEmpty String title, @NotEmpty String content) {}
 
-    public record UpdateLectureResponse(Long id, String title) {
-    }
+    public record UpdateLectureResponse(Long id, String title) {}
 
-    public record Result<T>(int count, T data) {
-    }
+    public record Result<T>(int count, T data) {}
 }
