@@ -1,7 +1,12 @@
 package com.example.java_proj1.service;
 
-import com.example.java_proj1.domain.*;
-import com.example.java_proj1.repository.*;
+import com.example.java_proj1.domain.Member;
+import com.example.java_proj1.domain.Team;
+import com.example.java_proj1.repository.LectureRepository;
+import com.example.java_proj1.repository.MemberRepository;
+import com.example.java_proj1.repository.RegistrationRepository;
+import com.example.java_proj1.repository.TeamRepository;
+import com.example.java_proj1.service.dto.RegistrationDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,9 @@ class RegistrationServiceTest {
     @Autowired
     TeamRepository teamRepository;
 
+    @Autowired
+    RegistrationRepository registrationRepository;
+
     @Test
     void registerAndFindAll() {
         // given
@@ -36,7 +44,7 @@ class RegistrationServiceTest {
                         .createdDate(LocalDate.now())
                         .build());
 
-        Member member = memberRepository.save(
+        var member = memberRepository.save(
                 Member.builder()
                         .name("aa")
                         .age(20)
@@ -45,27 +53,33 @@ class RegistrationServiceTest {
                         .team(team)
                         .build());
 
-        Lecture lecture = lectureRepository.save(
-                Lecture.builder()
+        var lecture = lectureRepository.save(
+                com.example.java_proj1.domain.Lecture.builder()
                         .title("Data Structures")
                         .content("Basic of DS")
                         .createdDate(LocalDate.now())
                         .build());
 
-        Registration registration = Registration.builder()
+        RegistrationDTO registrationDTO = RegistrationDTO.builder()
+                .memberId(member.getMemberId())
+                .lectureId(lecture.getLectureId())
                 .registeredDate(LocalDate.now())
-                .member(member)
-                .lecture(lecture)
                 .build();
 
         // when
-        registrationService.register(registration);
-        List<Registration> result = registrationService.findAll();
+        RegistrationDTO saved = registrationService.register(registrationDTO);
+
+        List<RegistrationDTO> allRegistrations = registrationService.findAll();
 
         // then
-        Assertions.assertThat(result).hasSize(1);
-        Assertions.assertThat(result.get(0).getMember().getName()).isEqualTo("aa");
-        Assertions.assertThat(result.get(0).getLecture().getTitle()).isEqualTo("Data Structures");
-        Assertions.assertThat(result.get(0).getRegisteredDate()).isNotNull();
+        Assertions.assertThat(allRegistrations).hasSize(1);
+
+        RegistrationDTO dto = allRegistrations.get(0);
+        Assertions.assertThat(dto.getMemberId()).isEqualTo(member.getMemberId());
+        Assertions.assertThat(dto.getLectureId()).isEqualTo(lecture.getLectureId());
+        Assertions.assertThat(dto.getRegisteredDate()).isNotNull();
+
+        Assertions.assertThat(saved.getMemberId()).isEqualTo(member.getMemberId());
+        Assertions.assertThat(saved.getLectureId()).isEqualTo(lecture.getLectureId());
     }
 }

@@ -1,7 +1,9 @@
 package com.example.java_proj1.service;
 
 import com.example.java_proj1.domain.Team;
-import com.example.java_proj1.repository.*;
+import com.example.java_proj1.repository.TeamRepository;
+import com.example.java_proj1.service.dto.TeamDTO;
+import com.example.java_proj1.service.mapper.TeamMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,27 +16,33 @@ import java.util.List;
 public class TeamService {
 
     private final TeamRepository teamRepository;
+    private final TeamMapper teamMapper;
 
     @Transactional
-    public Long register(Team team){
+    public TeamDTO register(TeamDTO dto) {
+        Team team = teamMapper.toEntity(dto);
         teamRepository.save(team);
-        return team.getTeamId();
+        return teamMapper.toDto(team);
     }
 
     @Transactional
-    public void update(Long teamId, String name){
-        Team team = teamRepository.findById(teamId).orElseThrow();
-        team.setName(name);
+    public TeamDTO update(Long teamId, TeamDTO dto) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new IllegalArgumentException("Team not found: " + teamId));
+        team.setName(dto.getName());
+        return teamMapper.toDto(team);
     }
 
-    public List<Team> findAll(){
-        return teamRepository.findAll();
+    public List<TeamDTO> findAll() {
+        return teamRepository.findAll()
+                .stream()
+                .map(teamMapper::toDto)
+                .toList();
     }
 
-    @Transactional(readOnly = true)
-    public Team findById(Long teamId) {
+    public TeamDTO findById(Long teamId) {
         return teamRepository.findById(teamId)
-                .orElseThrow(() -> new IllegalArgumentException("Team not found with id: " + teamId));
+                .map(teamMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Team not found: " + teamId));
     }
-
 }

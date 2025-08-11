@@ -1,6 +1,6 @@
 package com.example.java_proj1.service;
 
-import com.example.java_proj1.domain.Lecture;
+import com.example.java_proj1.service.dto.LectureDTO;
 import com.example.java_proj1.repository.LectureRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,30 +23,38 @@ class LectureServiceTest {
 
     @Test
     void registerAndListLectures() {
-        Lecture lecture = Lecture.builder()
+        LectureDTO dto = LectureDTO.builder()
                 .title("Java + Spring Boot")
                 .content("Basics of AI")
                 .createdDate(LocalDate.now())
                 .build();
 
-        Long id = lectureService.register(lecture);
-        List<Lecture> lectures = lectureService.findAll();
+        LectureDTO savedDto = lectureService.register(dto);
+        List<LectureDTO> lectures = lectureService.findAll();
 
         Assertions.assertThat(lectures).extracting("title").contains("Java + Spring Boot");
+        Assertions.assertThat(savedDto.getLectureId()).isNotNull();
     }
 
     @Test
     void updateLecture() {
-        Lecture lecture = lectureRepository.save(Lecture.builder()
+
+        LectureDTO dto = LectureDTO.builder()
                 .title("Old Title")
                 .content("Old Content")
                 .createdDate(LocalDate.now())
-                .build());
+                .build();
 
-        lectureService.update(lecture.getLectureId(), "New Title", "Updated Content");
+        LectureDTO savedDto = lectureService.register(dto);
 
-        Lecture updated = lectureRepository.findById(lecture.getLectureId()).orElseThrow();
-        Assertions.assertThat(updated.getTitle()).isEqualTo("New Title");
-        Assertions.assertThat(updated.getContent()).isEqualTo("Updated Content");
+        LectureDTO updateDto = LectureDTO.builder()
+                .title("New Title")
+                .content("Updated Content")
+                .build();
+
+        LectureDTO updatedDto = lectureService.update(savedDto.getLectureId(), updateDto);
+
+        Assertions.assertThat(updatedDto.getTitle()).isEqualTo("New Title");
+        Assertions.assertThat(updatedDto.getContent()).isEqualTo("Updated Content");
     }
 }

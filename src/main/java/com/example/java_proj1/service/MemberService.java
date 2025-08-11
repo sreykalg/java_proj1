@@ -3,6 +3,9 @@ package com.example.java_proj1.service;
 import com.example.java_proj1.domain.Member;
 import com.example.java_proj1.domain.Team;
 import com.example.java_proj1.repository.MemberRepository;
+import com.example.java_proj1.repository.TeamRepository;
+import com.example.java_proj1.service.dto.MemberDTO;
+import com.example.java_proj1.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,44 +18,63 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
+    private final MemberMapper memberMapper;
 
-    // register new member
     @Transactional
-    public Long register(Member member){
-        validateDuplicateMember(member);
+    public MemberDTO register(MemberDTO dto) {
+        validateDuplicateMember(dto.getName());
+
+        Member member = memberMapper.toEntity(dto);
+
+        // Set team if provided
+        if (dto.getTeamId() != null) {
+            Team team = teamRepository.findById(dto.getTeamId())
+                    .orElseThrow(() -> new IllegalArgumentException("Team not found: " + dto.getTeamId()));
+            member.changeTeam(team);
+        }
+
         memberRepository.save(member);
-        return member.getMemberId();
+        return memberMapper.toDto(member);
     }
 
-    // remove redundancy of memebers' name
-    private void validateDuplicateMember(Member member) {
-        List<Member> byName = memberRepository.findByName(member.getName());
+    private void validateDuplicateMember(String name) {
+        List<Member> byName = memberRepository.findByName(name);
         if (!byName.isEmpty()) {
             throw new IllegalStateException("This member already exists.");
         }
     }
 
-    // List all members
-    public List<Member> findMembers(){
-        return memberRepository.findAll();
+
+    public List<MemberDTO> findMembers() {
+        return memberRepository.findAll()
+                .stream()
+                .map(memberMapper::toDto)
+                .toList();
     }
 
-    public Member findById(Long memberId) {
+    public MemberDTO findById(Long memberId) {
         return memberRepository.findById(memberId)
+                .map(memberMapper::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
     }
 
     @Transactional
-    public void update(Long memberId, String name, int age, String address, Team team) {
+    public MemberDTO update(Long memberId, MemberDTO dto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
-        member.changeName(name);
-        member.changeAge(age);
-        member.changeAddress(address);
 
-        member.changeTeam(team);
+        member.changeName(dto.getName());
+        member.changeAge(dto.getAge());
+        member.changeAddress(dto.getAddress());
+
+        if (dto.getTeamId() != null) {
+            Team team = teamRepository.findById(dto.getTeamId())
+                    .orElseThrow(() -> new IllegalArgumentException("Team not found: " + dto.getTeamId()));
+            member.changeTeam(team);
+        }
+
+        return memberMapper.toDto(member);
     }
 
-
 }
-

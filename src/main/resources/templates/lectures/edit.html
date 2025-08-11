@@ -14,23 +14,20 @@
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4 fw-bold text-primary">Edit Lecture</h3>
-                    <form th:action="@{'/lectures/' + ${lectureId} + '/edit'}"
-                          th:object="${updateLectureRequest}"
+                    <form th:action="@{'/lectures/' + ${lectureDTO.lectureId} + '/edit'}"
+                          th:object="${lectureDTO}"
                           method="post">
 
                         <!-- Lecture Title -->
                         <div class="mb-3">
                             <label for="editLectureTitle" class="form-label fw-semibold">Title</label>
-                            <input type="text" th:field="*{title}" id="editLectureTitle" name="title"
-                                   class="form-control" placeholder="Enter lecture title" required/>
+                            <input type="text" th:field="*{title}" id="editLectureTitle" class="form-control" placeholder="Enter lecture title" required/>
                         </div>
 
                         <!-- Lecture Content -->
                         <div class="mb-4">
                             <label for="editLectureContent" class="form-label fw-semibold">Content</label>
-                            <textarea id="editLectureContent" th:field="*{content}" name="content" rows="4"
-                                      style="resize:none;"
-                                      class="form-control" placeholder="Enter lecture content" required></textarea>
+                            <textarea id="editLectureContent" th:field="*{content}" rows="4" style="resize:none;" class="form-control" placeholder="Enter lecture content" required></textarea>
                         </div>
 
                         <!-- Submit Button -->

@@ -2,6 +2,7 @@ package com.example.java_proj1.service;
 
 import com.example.java_proj1.domain.Team;
 import com.example.java_proj1.repository.TeamRepository;
+import com.example.java_proj1.service.dto.TeamDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,17 @@ class TeamServiceTest {
 
     @Test
     void registerAndFindAll() {
-        // given
-        Team team = Team.builder()
+        // given - build TeamDTO
+        TeamDTO dto = TeamDTO.builder()
                 .name("Team Alpha")
                 .createdDate(LocalDate.of(2025, 8, 8))
                 .build();
 
-        // when
-        Long id = teamService.register(team);
-        List<Team> teams = teamService.findAll();
+        // when - register with DTO
+        TeamDTO savedDto = teamService.register(dto);
 
-        // then
+        // then - findAll returns List<TeamDTO>
+        List<TeamDTO> teams = teamService.findAll();
         Assertions.assertThat(teams).extracting("name").contains("Team Alpha");
     }
 
@@ -45,8 +46,13 @@ class TeamServiceTest {
                 .createdDate(LocalDate.now())
                 .build());
 
+        TeamDTO updateDto = TeamDTO.builder()
+                .name("Updated Name")
+                .createdDate(team.getCreatedDate())
+                .build();
+
         // when
-        teamService.update(team.getTeamId(), "Updated Name");
+        teamService.update(team.getTeamId(), updateDto);
 
         // then
         Team updated = teamRepository.findById(team.getTeamId()).orElseThrow();

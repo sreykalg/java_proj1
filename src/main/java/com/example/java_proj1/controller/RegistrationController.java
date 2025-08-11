@@ -1,13 +1,9 @@
 package com.example.java_proj1.controller;
 
-
-import com.example.java_proj1.api.controller.RegistrationApiController;
-import com.example.java_proj1.domain.Lecture;
-import com.example.java_proj1.domain.Member;
-import com.example.java_proj1.domain.Registration;
 import com.example.java_proj1.service.LectureService;
 import com.example.java_proj1.service.MemberService;
 import com.example.java_proj1.service.RegistrationService;
+import com.example.java_proj1.service.dto.RegistrationDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,58 +15,48 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/registrations")
 @RequiredArgsConstructor
+@RequestMapping("/registrations")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
     private final MemberService memberService;
     private final LectureService lectureService;
 
-    //List all registrations page
     @GetMapping("/list")
     public String listRegistrations(Model model) {
-        List<Registration> registrations = registrationService.findAll();
+        List<RegistrationDTO> registrations = registrationService.findAll();
         model.addAttribute("registrations", registrations);
         return "registrations/list";
     }
 
-    //Show add registration form
     @GetMapping("/add")
     public String showAddForm(Model model) {
-        model.addAttribute("createRegistrationRequest", new RegistrationApiController.CreateRegistrationRequest(LocalDate.now(), null, null));
+        RegistrationDTO dto = RegistrationDTO.builder()
+                .registrationId(null)
+                .memberId(null)
+                .lectureId(null)
+                .registeredDate(LocalDate.now())
+                .build();
+
+        model.addAttribute("registrationDTO", dto);
         model.addAttribute("members", memberService.findMembers());
         model.addAttribute("lectures", lectureService.findAll());
         return "registrations/add";
     }
 
-    //add registration form submit
+
     @PostMapping("/add")
-    public String addRegistration(@Valid @ModelAttribute("createRegistrationRequest") RegistrationApiController.CreateRegistrationRequest request,
+    public String addRegistration(@Valid @ModelAttribute("registrationDTO") RegistrationDTO dto,
                                   BindingResult bindingResult,
                                   Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("members", memberService.findMembers());
+            model.addAttribute("members", memberService.findMembers());  // <-- fixed here
             model.addAttribute("lectures", lectureService.findAll());
             return "registrations/add";
         }
-
-        Member member = null;
-        Lecture lecture = null;
-        if (request.memberId() != null) {
-            member = memberService.findById(request.memberId());
-        }
-        if (request.lectureId() != null) {
-            lecture = lectureService.findById(request.lectureId());
-        }
-
-        Registration registration = Registration.builder()
-                .registeredDate(request.registeredDate())
-                .member(member)
-                .lecture(lecture)
-                .build();
-
-        registrationService.register(registration);
+        registrationService.register(dto);
         return "redirect:/registrations/list";
     }
+
 }

@@ -1,35 +1,8 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--  <title>Add Registration</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Add New Registration</h1>-->
-
-<!--<form th:action="@{/registrations/add}" th:object="${createRegistrationRequest}" method="post">-->
-<!--  <label>Member:-->
-<!--    <select th:field="*{memberId}">-->
-<!--      <option th:each="member : ${members}" th:value="${member.memberId}" th:text="${member.name}">Member</option>-->
-<!--    </select>-->
-<!--  </label><br/>-->
-<!--  <label>Lecture:-->
-<!--    <select th:field="*{lectureId}">-->
-<!--      <option th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.title}">Lecture</option>-->
-<!--    </select>-->
-<!--  </label><br/>-->
-<!--  <label>Registered Date: <input type="date" th:field="*{registeredDate}"/></label><br/>-->
-<!--  <button type="submit">Add Registration</button>-->
-<!--</form>-->
-
-<!--<a th:href="@{/registrations/list}">Back to Registration List</a>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Add Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
@@ -42,7 +15,7 @@
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4 fw-bold text-primary">Add New Registration</h3>
 
-                    <form th:action="@{/registrations/add}" th:object="${createRegistrationRequest}" method="post">
+                    <form th:action="@{/registrations/add}" th:object="${registrationDTO}" method="post">
 
                         <!-- Member Selection -->
                         <div class="mb-3">
@@ -54,6 +27,7 @@
                                         th:text="${member.name}">
                                 </option>
                             </select>
+                            <div th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}" class="text-danger mt-1"></div>
                         </div>
 
                         <!-- Lecture Selection -->
@@ -66,24 +40,23 @@
                                         th:text="${lecture.title}">
                                 </option>
                             </select>
+                            <div th:if="${#fields.hasErrors('lectureId')}" th:errors="*{lectureId}" class="text-danger mt-1"></div>
                         </div>
 
                         <!-- Registered Date -->
                         <div class="mb-4">
                             <label for="registeredDate" class="form-label fw-semibold">Registered Date</label>
                             <input type="date" id="registeredDate" th:field="*{registeredDate}" class="form-control" required/>
+                            <div th:if="${#fields.hasErrors('registeredDate')}" th:errors="*{registeredDate}" class="text-danger mt-1"></div>
                         </div>
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-between">
-                            <a th:href="@{/registrations/list}" class="btn btn-warning btn-sm rounded">
-                                Back to Registration List
-                            </a>
-                            <button type="submit" class="btn btn-success btn-sm rounded">
-                                Save Registration
-                            </button>
+                            <a th:href="@{/registrations/list}" class="btn btn-warning btn-sm rounded">Back to Registration List</a>
+                            <button type="submit" class="btn btn-success btn-sm rounded">Save Registration</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

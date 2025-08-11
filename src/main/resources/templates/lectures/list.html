@@ -41,16 +41,16 @@
                             <td th:text="${lecture.content}"></td>
                             <td th:text="${lecture.createdDate}"></td>
                             <td>
-                                <!-- Edit Button ( navigate to the edit page)-->
+                                <!-- Edit Button -->
                                 <a th:href="@{'/lectures/' + ${lecture.lectureId} + '/edit'}"
                                    class="btn btn-secondary btn-sm rounded px-4">
                                     Edit
                                 </a>
-
                             </td>
                         </tr>
                         </tbody>
                     </table>
+
                     <!-- Back to home button at bottom right -->
                     <div class="d-flex justify-content-end mt-3">
                         <a th:href="@{/}" class="btn btn-warning btn-sm rounded">

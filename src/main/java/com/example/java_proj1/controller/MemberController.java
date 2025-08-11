@@ -1,13 +1,8 @@
 package com.example.java_proj1.controller;
 
-import com.example.java_proj1.api.controller.MemberApiController;
-import com.example.java_proj1.api.controller.MemberApiController.CreateMemberRequest;
-import com.example.java_proj1.api.controller.MemberApiController.UpdateMemberRequest;
-import com.example.java_proj1.api.controller.MemberApiController.GetMemberResponse;
-import com.example.java_proj1.domain.Member;
-import com.example.java_proj1.domain.Team;
 import com.example.java_proj1.service.MemberService;
 import com.example.java_proj1.service.TeamService;
+import com.example.java_proj1.service.dto.MemberDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,107 +12,72 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/members")
 @RequiredArgsConstructor
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
     private final TeamService teamService;
 
-    //List all members - return view
     @GetMapping("/list")
     public String listMembers(Model model) {
-        List<Member> members = memberService.findMembers();
-        List<GetMemberResponse> memberResponses = members.stream()
-                .map(m -> new GetMemberResponse(m.getMemberId(), m.getName(), m.getAge(), m.getAddress(), m.getCreatedDate(), m.getTeam() != null
-                        ? new MemberApiController.TeamResponse(m.getTeam().getTeamId(), m.getTeam().getName())
-                        : null))
-                .collect(Collectors.toList());
-        model.addAttribute("members", memberResponses);
+        List<MemberDTO> members = memberService.findMembers();
+        model.addAttribute("members", members);
         return "members/list";
     }
 
-    //Show Add Member form
     @GetMapping("/add")
     public String showAddForm(Model model) {
-        model.addAttribute("createMemberRequest", new CreateMemberRequest("", 0, "", LocalDate.now(), null));
+        model.addAttribute("memberDTO", MemberDTO.builder()
+                .memberId(null)
+                .name("")
+                .age(0)
+                .address("")
+                .createdDate(LocalDate.now())
+                .teamId(null)
+                .build()
+        );
         model.addAttribute("teams", teamService.findAll());
         return "members/add";
     }
 
-    //Add Member form submit
     @PostMapping("/add")
-    public String addMember(@Valid @ModelAttribute("createMemberRequest") CreateMemberRequest request,
+    public String addMember(@Valid @ModelAttribute("memberDTO") MemberDTO dto,
                             BindingResult bindingResult,
                             Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("teams", teamService.findAll());
             return "members/add";
         }
-        Team team = null;
-        if (request.teamId() != null) {
-            team = teamService.findById(request.teamId());
+
+        try {
+            memberService.register(dto);
+        } catch (IllegalStateException e) {
+            bindingResult.rejectValue("name", "duplicate", e.getMessage());
+            return "members/add";
         }
-        Member member = Member.builder()
-                .name(request.name())
-                .age(request.age())
-                .address(request.address())
-                .createdDate(request.createdDate())
-                .team(team)
-                .build();
-        memberService.register(member);
+
         return "redirect:/members/list";
     }
 
-    //Show Edit Member form
-    @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable("id") Long id, Model model) {
-        Member member = memberService.findById(id);
 
-        UpdateMemberForm updateForm = new UpdateMemberForm(member);
-        model.addAttribute("updateMemberRequest", updateForm);
-        model.addAttribute("memberId", id);
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        MemberDTO dto = memberService.findById(id);
+        model.addAttribute("memberDTO", dto);
         model.addAttribute("teams", teamService.findAll());
         return "members/edit";
     }
 
-    //Edit Member form submit
     @PostMapping("/{id}/edit")
-    public String editMember(@PathVariable("id") Long id,
-                             @Valid @ModelAttribute("updateMemberRequest") UpdateMemberForm form,
-                             BindingResult bindingResult,
-                             Model model) {
+    public String editMember(@PathVariable Long id, @Valid @ModelAttribute("memberDTO") MemberDTO dto,
+                             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("memberId", id);
             model.addAttribute("teams", teamService.findAll());
             return "members/edit";
         }
-        Team team = null;
-        if (form.teamId() != null) {
-            team = teamService.findById(form.teamId());
-        }
-//        memberService.update(id, request.name(), request.age(), request.address());
-        memberService.update(id, form.name(), form.age(), form.address(), team);
+        memberService.update(id, dto);
         return "redirect:/members/list";
-
-    }
-
-    public record UpdateMemberForm(
-            String name,
-            int age,
-            String address,
-            Long teamId
-    ) {
-        public UpdateMemberForm(Member member) {
-            this(
-                    member.getName(),
-                    member.getAge(),
-                    member.getAddress(),
-                    member.getTeam() != null ? member.getTeam().getTeamId() : null
-            );
-        }
     }
 }
