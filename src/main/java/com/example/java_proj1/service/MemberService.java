@@ -68,6 +68,10 @@ public class MemberService {
         member.changeAge(dto.getAge());
         member.changeAddress(dto.getAddress());
 
+        if (dto.getCreatedDate() != null) {
+            member.setCreatedDate(dto.getCreatedDate()); // or member.changeCreatedDate(...)
+        }
+
         if (dto.getTeamId() != null) {
             Team team = teamRepository.findById(dto.getTeamId())
                     .orElseThrow(() -> new IllegalArgumentException("Team not found: " + dto.getTeamId()));

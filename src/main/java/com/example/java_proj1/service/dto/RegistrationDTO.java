@@ -23,4 +23,15 @@ public class RegistrationDTO {
      private MemberDTO member;
      private LectureDTO lecture;
 
+     public String getMemberName() {
+          return member != null ? member.getName() : "";
+     }
+
+     public String getTeamName() {
+          return member != null && member.getTeam() != null ? member.getTeam().getName() : "";
+     }
+
+     public String getLectureTitle() {
+          return lecture != null ? lecture.getTitle() : "";
+     }
 }

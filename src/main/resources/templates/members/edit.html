@@ -39,6 +39,18 @@
                             <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger mt-1"></div>
                         </div>
 
+                        <!-- Created Date -->
+                        <div class="mb-4">
+                            <label for="memberCreatedDate" class="form-label fw-semibold">Created Date</label>
+                            <input type="date"
+                                   th:field="*{createdDate}"
+                                   id="memberCreatedDate"
+                                   class="form-control"
+                                   required />
+                            <div th:if="${#fields.hasErrors('createdDate')}" th:errors="*{createdDate}" class="text-danger mt-1"></div>
+                        </div>
+
+
                         <!-- Select Team -->
                         <div class="mb-4">
                             <label for="teamSelect" class="form-label fw-semibold">Select a Team</label>

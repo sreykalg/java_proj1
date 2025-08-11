@@ -30,6 +30,8 @@ public class TeamService {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Team not found: " + teamId));
         team.setName(dto.getName());
+        team.setCreatedDate(dto.getCreatedDate());
+        teamRepository.save(team);
         return teamMapper.toDto(team);
     }
 

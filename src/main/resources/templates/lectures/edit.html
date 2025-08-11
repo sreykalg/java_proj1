@@ -30,6 +30,13 @@
                             <textarea id="editLectureContent" th:field="*{content}" rows="4" style="resize:none;" class="form-control" placeholder="Enter lecture content" required></textarea>
                         </div>
 
+
+                        <!-- Lecture Date -->
+                        <div class="mb-4">
+                            <label for="editLectureDate" class="form-label fw-semibold">Creation Date</label>
+                            <input type="date" id="editLectureDate" th:field="*{createdDate}" class="form-control" required />
+                        </div>
+
                         <!-- Submit Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success btn-lg rounded mt-2 w-50 mx-auto d-block">
