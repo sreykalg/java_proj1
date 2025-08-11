@@ -98,6 +98,7 @@
   <a href="/teams/list">Teams</a>
   <a href="/lectures/list">Lectures</a>
   <a href="/registrations/list">Registrations</a>
+  <a th:href="@{/registrations/registered_members}" >View Registered Members</a>
 </nav>
 
 <main>
@@ -124,6 +125,11 @@
       <h3>Registrations</h3>
       <p>Track and manage course registrations.</p>
       <a href="/registrations/list">Go to Registrations</a>
+    </div>
+    <div class="card">
+      <h3>View Registered Member</h3>
+      <p>List of Member who have registered</p>
+      <a href="/registrations/registered_members">View Here</a>
     </div>
   </div>
 </main>

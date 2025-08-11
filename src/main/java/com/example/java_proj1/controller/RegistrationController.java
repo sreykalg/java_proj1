@@ -59,4 +59,12 @@ public class RegistrationController {
         return "redirect:/registrations/list";
     }
 
+    @GetMapping("/registered_members")
+    public String listRegisteredMembers(Model model) {
+        List<RegistrationDTO> registrations = registrationService.findAll();
+        model.addAttribute("registrations", registrations);
+        return "registrations/registered_members"; // new html file
+    }
+
+
 }

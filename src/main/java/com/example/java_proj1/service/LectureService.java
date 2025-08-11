@@ -32,7 +32,7 @@ public class LectureService {
 
         lecture.changeTitle(dto.getTitle());
         lecture.changeContent(dto.getContent());
-
+        lecture.setCreatedDate(dto.getCreatedDate());
         return lectureMapper.toDto(lecture);
     }
 
