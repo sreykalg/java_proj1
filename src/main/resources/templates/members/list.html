@@ -12,9 +12,7 @@
     <!-- Header & Action -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
         <h2 class="fw-bold text-primary mb-2 mb-sm-0">Member List</h2>
-        <a th:href="@{/members/add}" class="btn btn-outline-primary w-30 rounded shadow-sm d-block">
-            + Register New Member
-        </a>
+        <a th:href="@{/members/add}" class="btn btn-outline-primary w-30 rounded shadow-sm d-block">+ Register New Member</a>
     </div>
 
     <!-- Member List Card -->
@@ -38,30 +36,27 @@
                         </thead>
                         <tbody>
                         <tr th:each="member : ${members}">
-                            <td th:text="${member.id}"></td>
+                            <td th:text="${member.memberId}"></td>
                             <td th:text="${member.name}"></td>
                             <td th:text="${member.age}"></td>
                             <td th:text="${member.address}"></td>
                             <td th:text="${member.createdDate}"></td>
-                            <td th:text="${member.team != null ? member.team.name : 'No Team'}"></td>
-                            <!-- Edit Button -->
+                            <td th:text="${member.team != null ? member.team.name : 'No Team'}">Team Name</td>
                             <td>
-                                <a th:href="@{'/members/' + ${member.id} + '/edit'}"
-                                   class="btn btn-secondary btn-sm rounded px-4">
-                                    Edit
-                                </a>
+                                <!-- Edit Button -->
+                                <a th:href="@{'/members/' + ${member.memberId} + '/edit'}" class="btn btn-secondary btn-sm rounded px-4">Edit</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <!-- Back to home button at bottom right -->
+
+                    <!-- Back to home button -->
                     <div class="d-flex justify-content-end mt-3">
-                        <a th:href="@{/}" class="btn btn-warning btn-sm rounded">
-                            Back to Home
-                        </a>
+                        <a th:href="@{/}" class="btn btn-warning btn-sm rounded">Back to Home</a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </main>

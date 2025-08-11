@@ -14,36 +14,28 @@
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4">
                     <h3 class="text-center mb-4 fw-bold text-primary">Register Team</h3>
-                    <form id="registerTeamForm" th:action="@{/teams/add}" th:object="${createTeamRequest}" method="post">
-
-                        <!-- Team Name -->
+                    <form th:action="@{/teams/add}" th:object="${teamDTO}" method="post">
                         <div class="mb-3">
                             <label for="registerTeamName" class="form-label fw-semibold">Team Name</label>
-                            <input type="text" th:field="*{name}" id="registerTeamName" name="name"
-                                   class="form-control" placeholder="Enter team name" required>
+                            <input type="text" th:field="*{name}" id="registerTeamName" class="form-control" placeholder="Enter team name" required />
+                            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger mt-1"></div>
                         </div>
 
-                        <!-- Creation Date -->
                         <div class="mb-4">
                             <label for="registerCreationDate" class="form-label fw-semibold">Creation Date</label>
-                            <input type="date" th:field="*{createdDate}" id="registerCreationDate" name="creationDate"
-                                   class="form-control" required>
+                            <input type="date" th:field="*{createdDate}" id="registerCreationDate" class="form-control" required />
+                            <div th:if="${#fields.hasErrors('createdDate')}" th:errors="*{createdDate}" class="text-danger mt-1"></div>
                         </div>
 
-                        <!-- Submit Button -->
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg rounded mt-2 btn-lg w-50 mx-auto d-block">
-                                Save
-                            </button>
+                            <button type="submit" class="btn btn-primary btn-lg rounded mt-2 w-50 mx-auto d-block">Save</button>
                         </div>
 
-                        <!-- Back to lecture list button at bottom right -->
                         <div class="d-flex justify-content-end mt-3">
-                            <a th:href="@{/teams/list}" class="btn btn-warning btn-sm rounded">
-                                Back to Team List
-                            </a>
+                            <a th:href="@{/teams/list}" class="btn btn-warning btn-sm rounded">Back to Team List</a>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

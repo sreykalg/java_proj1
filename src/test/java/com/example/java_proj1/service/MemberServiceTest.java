@@ -1,9 +1,9 @@
 package com.example.java_proj1.service;
 
-import com.example.java_proj1.domain.Member;
 import com.example.java_proj1.domain.Team;
 import com.example.java_proj1.repository.MemberRepository;
 import com.example.java_proj1.repository.TeamRepository;
+import com.example.java_proj1.service.dto.MemberDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -33,18 +32,19 @@ class MemberServiceTest {
                 .createdDate(LocalDate.now())
                 .build());
 
-        Member member = Member.builder()
+        MemberDTO dto = MemberDTO.builder()
                 .name("Alice")
                 .age(22)
                 .address("Street-199")
                 .createdDate(LocalDate.now())
-                .team(team)
+                .teamId(team.getTeamId())
                 .build();
 
-        Long memberId = memberService.register(member);
-        Member found = memberService.findById(memberId);
+        MemberDTO savedDto = memberService.register(dto);
+        MemberDTO foundDto = memberService.findById(savedDto.getMemberId());
 
-        Assertions.assertThat(found.getName()).isEqualTo("Alice");
+        Assertions.assertThat(foundDto.getName()).isEqualTo("Alice");
+        Assertions.assertThat(foundDto.getTeamId()).isEqualTo(team.getTeamId());
     }
 
     @Test
@@ -54,19 +54,27 @@ class MemberServiceTest {
                 .createdDate(LocalDate.now())
                 .build());
 
-        Member member = memberRepository.save(Member.builder()
+        MemberDTO dto = MemberDTO.builder()
                 .name("Bob")
                 .age(20)
-                .address("Stree-200")
+                .address("Street-200")
                 .createdDate(LocalDate.now())
-                .team(team)
-                .build());
+                .teamId(team.getTeamId())
+                .build();
 
-        memberService.update(member.getMemberId(), "Bob Updated", 25, "Street-100");
+        MemberDTO savedDto = memberService.register(dto);
 
-        Member updated = memberRepository.findById(member.getMemberId()).orElseThrow();
-        Assertions.assertThat(updated.getName()).isEqualTo("Bob Updated");
-        Assertions.assertThat(updated.getAge()).isEqualTo(25);
-        Assertions.assertThat(updated.getAddress()).isEqualTo("Street-100");
+        MemberDTO updateDto = MemberDTO.builder()
+                .name("Bob Updated")
+                .age(25)
+                .address("Street-100")
+                .teamId(team.getTeamId())
+                .build();
+
+        MemberDTO updatedDto = memberService.update(savedDto.getMemberId(), updateDto);
+
+        Assertions.assertThat(updatedDto.getName()).isEqualTo("Bob Updated");
+        Assertions.assertThat(updatedDto.getAge()).isEqualTo(25);
+        Assertions.assertThat(updatedDto.getAddress()).isEqualTo("Street-100");
     }
 }
