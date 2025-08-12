@@ -33,8 +33,11 @@ public class LectureApiController {
         return lectureService.findAll();
     }
 
-    public record CreateLectureResponse(Long id) {}
-    public record UpdateLectureResponse(Long id, String title) {}
+    public record CreateLectureResponse(Long id) {
+    }
+
+    public record UpdateLectureResponse(Long id, String title) {
+    }
 }
 
 

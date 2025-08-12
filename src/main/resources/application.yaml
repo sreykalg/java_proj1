@@ -1,27 +1,3 @@
-#spring:
-#  application:
-#    name: java_proj1
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/test
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: create
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        default_batch_fetch_size: 100
-#    open-in-view: true
-#
-#logging.level:
-#  org.hibernate.SQL: debug?
-#
-#
-
-
 spring:
   application:
     name: java_proj1
@@ -32,7 +8,6 @@ spring:
     driver-class-name: org.h2.Driver
 
   jpa:
-    # Disable Hibernate's automatic schema creation
     hibernate:
       ddl-auto: none
     properties:
@@ -43,8 +18,8 @@ spring:
 
   sql:
     init:
-      mode: always                # Always run schema and data SQL files
-      schema-locations: classpath:sql/schema.sql  # path to your schema.sql file
+      mode: always
+      schema-locations: classpath:sql/schema.sql
 
 logging:
   level:
