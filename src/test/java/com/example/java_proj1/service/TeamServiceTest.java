@@ -24,16 +24,16 @@ class TeamServiceTest {
 
     @Test
     void registerAndFindAll() {
-        // given - build TeamDTO
+        // given
         TeamDTO dto = TeamDTO.builder()
                 .name("Team Alpha")
                 .createdDate(LocalDate.of(2025, 8, 8))
                 .build();
 
-        // when - register with DTO
+        // when
         TeamDTO savedDto = teamService.register(dto);
 
-        // then - findAll returns List<TeamDTO>
+        // then
         List<TeamDTO> teams = teamService.findAll();
         Assertions.assertThat(teams).extracting("name").contains("Team Alpha");
     }

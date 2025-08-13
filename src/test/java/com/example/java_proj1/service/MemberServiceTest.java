@@ -27,6 +27,7 @@ class MemberServiceTest {
 
     @Test
     void registerAndFindMember() {
+        // given
         Team team = teamRepository.save(Team.builder()
                 .name("Test Team")
                 .createdDate(LocalDate.now())
@@ -40,15 +41,18 @@ class MemberServiceTest {
                 .teamId(team.getTeamId())
                 .build();
 
+        // when
         MemberDTO savedDto = memberService.register(dto);
         MemberDTO foundDto = memberService.findById(savedDto.getMemberId());
 
+        // then
         Assertions.assertThat(foundDto.getName()).isEqualTo("Alice");
         Assertions.assertThat(foundDto.getTeamId()).isEqualTo(team.getTeamId());
     }
 
     @Test
     void updateMemberInfo() {
+        // given
         Team team = teamRepository.save(Team.builder()
                 .name("Test Team")
                 .createdDate(LocalDate.now())
@@ -62,6 +66,7 @@ class MemberServiceTest {
                 .teamId(team.getTeamId())
                 .build();
 
+        // when
         MemberDTO savedDto = memberService.register(dto);
 
         MemberDTO updateDto = MemberDTO.builder()
@@ -73,6 +78,7 @@ class MemberServiceTest {
 
         MemberDTO updatedDto = memberService.update(savedDto.getMemberId(), updateDto);
 
+        // then
         Assertions.assertThat(updatedDto.getName()).isEqualTo("Bob Updated");
         Assertions.assertThat(updatedDto.getAge()).isEqualTo(25);
         Assertions.assertThat(updatedDto.getAddress()).isEqualTo("Street-100");
