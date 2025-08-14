@@ -9,13 +9,16 @@ spring:
 
   jpa:
     hibernate:
+      # flywaydb + validate
       ddl-auto: none
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
+    # open-in-view false
     open-in-view: true
 
+  # flywaydb
   sql:
     init:
       mode: always

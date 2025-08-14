@@ -11,11 +11,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@Setter // ref lecture
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "team")
+@Table(name = "team") // ref lecture
 public class Team {
 
     // requirement :
@@ -24,12 +24,12 @@ public class Team {
     * */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_id")
+    @Column(name = "team_id") // ref lecture
     private Long teamId;
 
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd") // ref lecture
     private LocalDate createdDate;
 
     @Builder.Default

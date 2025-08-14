@@ -8,11 +8,11 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-@Setter
+@Setter // ref lecture
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "registration")
+@Table(name = "registration") // ref lecture
 public class Registration {
 
     /* requirement:
@@ -24,10 +24,10 @@ public class Registration {
     * */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "registration_id")
+    @Column(name = "registration_id") // ref lecture
     private Long registrationId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd") // ref lecture
     private LocalDate registeredDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
