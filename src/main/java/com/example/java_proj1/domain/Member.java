@@ -10,11 +10,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@Setter // ref Lecture
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(name = "member")
+@Table(name = "member") // ref Lecture
 public class Member {
 
     /* Requirement:
@@ -22,9 +22,10 @@ public class Member {
     * */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "member_id") // ref Lecture
     private Long memberId;
 
+    // I think it would be better to use this constructor in the form `public static Member of(String name, ..)`
     // Constructor
     public Member(Long memberId, String name, int age, String address, LocalDate createdDate) {
         this.memberId = memberId;
@@ -38,7 +39,7 @@ public class Member {
     private int age;
     private String address;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd") // I think this is not needed
     private LocalDate createdDate;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    // Will it be received as `List<Member>` because of the duplicate name? How about specifying `name` as a unique index in the Member class?
     List<Member> findByName(String name);
 }

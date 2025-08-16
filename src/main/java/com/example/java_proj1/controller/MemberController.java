@@ -30,6 +30,8 @@ public class MemberController {
 
     @GetMapping("/add")
     public String showAddForm(Model model) {
+        // I recommended
+        // MemberDTO dto = new MemberDTO();
         model.addAttribute("memberDTO", MemberDTO.builder()
                 .memberId(null)
                 .name("")

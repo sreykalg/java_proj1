@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+// Is there any reason to use this class?
 @Repository
 @RequiredArgsConstructor
 public class MemberJpaRepository {
