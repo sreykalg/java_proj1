@@ -32,6 +32,7 @@ public class RegistrationController {
 
     @GetMapping("/add")
     public String showAddForm(Model model) {
+        // RegistrationDTO dto = new RegistrationDTO();
         RegistrationDTO dto = RegistrationDTO.builder()
                 .registrationId(null)
                 .memberId(null)
@@ -51,6 +52,7 @@ public class RegistrationController {
                                   BindingResult bindingResult,
                                   Model model) {
         if (bindingResult.hasErrors()) {
+            // Wow! I was going to talk about this later, but you did it.
             model.addAttribute("members", memberService.findMembers());  // <-- fixed here
             model.addAttribute("lectures", lectureService.findAll());
             return "registrations/add";

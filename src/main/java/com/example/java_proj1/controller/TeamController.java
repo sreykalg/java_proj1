@@ -36,6 +36,7 @@ public class TeamController {
         return "teams/add";
     }
 
+    // @ModelAttribute can be omitted.
     @PostMapping("/add")
     public String addTeam(@Valid @ModelAttribute("teamDTO") TeamDTO dto,
                           BindingResult bindingResult) {
@@ -53,6 +54,7 @@ public class TeamController {
         return "teams/edit";
     }
 
+    // @ModelAttribute can be omitted.
     @PostMapping("/{id}/edit")
     public String editTeam(@PathVariable Long id,
                            @Valid @ModelAttribute("teamDTO") TeamDTO dto,
