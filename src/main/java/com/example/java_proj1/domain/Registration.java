@@ -27,7 +27,7 @@ public class Registration {
     @Column(name = "registration_id") // ref lecture
     private Long registrationId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd") // ref lecture
+    @JsonFormat(pattern = "yyyy-MM-dd") // I think this is not needed
     private LocalDate registeredDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

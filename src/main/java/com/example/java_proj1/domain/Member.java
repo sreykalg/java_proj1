@@ -39,7 +39,7 @@ public class Member {
     private int age;
     private String address;
 
-    @JsonFormat(pattern = "yyyy-MM-dd") // ref lecture
+    @JsonFormat(pattern = "yyyy-MM-dd") // I think this is not needed
     private LocalDate createdDate;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
